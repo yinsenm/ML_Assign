@@ -1,0 +1,249 @@
+Prediction Assignment Writeup
+========================================================
+# Download the dataset
+First, I set the working directory, load relevant pacakges and download all the datasets available on the Coursera. Then read the training and testing dataset to R.
+
+```{r setoptions, echo=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+```{r, eval=F}
+# set working directory
+setwd("C:/")
+if(!file.exists("./Data")) {dir.create("./Data")}
+# download related training and testing dataset
+train.url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+test.url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+download.file(train.url, destfile = "./Data/train.csv")
+download.file(test.url, destfile = "./Data/test.csv")
+```
+
+```{r,message=FALSE}
+# load relavent dataset
+library(caret)
+library(randomForest)
+library(plyr)
+
+# read the dataset
+training <- read.csv("./Data/train.csv")
+testing <- read.csv("./Data/test.csv")
+```
+
+# Dataset Cleaning
+Then I noticed that there are many NAs in the dataset and many values are missing. So I decided to change the numeric values in the dataset to the type of numeric, do a count of NAs and then deleted variables with NAs over 90%. After this, 101 features are deleted because of many NAs. Finally, redo all process to the testing dataset.
+
+```{r,message=FALSE,warning=FALSE}
+# feature selections
+# convert all nemeric features to numeric type
+training[,6:159] <- apply(training[,6:159], 2, as.numeric)
+
+# step 1 delete the potential features with over 90% missing values
+NAs <- sapply(training, function(i) sum(is.na(i))) / nrow(training)
+na.feature <- names(which(NAs > 0.9))
+# a short list of deleted features
+head(na.feature)
+# 101 features are deleted
+length(na.feature)
+keep.feaure <- setdiff(names(training), na.feature)
+# deleted all NA features
+training <- training[,keep.feaure]
+
+# step 2 deleted all irrelevant variables such as name, time stamp, windows..
+training <- training[, 7:59]
+
+# now perform similar treatment to testing dataset
+testing <- testing[, keep.feaure[-59]]
+testing <- testing[, 7:58]
+```
+
+# Sampling
+I defined a sampling function that can divided the training dataset to subtrain and subtest according to porportion and number of test observations given. And this function is reproducable with a random seed defined. The function returns a list of data.frame which can be used for the cross validation part below.
+
+```{r}
+# function name: sample.dataset
+# df <- sample.dataset(p = 0.20, tt.num = 100, dataset = training, rand.seed = 0)
+# sample p% proportion of the dataset as training set
+# then use sample n of the rest of the dataset as testing set
+
+# Input>
+# p         proportion of the dataset to be sampled (0.1)
+# dataset   the dataset to be splited into training and testing (training)
+# rand.seed the seed use for generating random sample (0)
+# tt.num the number to be sampled to training dataset (100)
+
+sample.dataset <- function(p, tt.num, dataset, rand.seed){
+    set.seed(rand.seed)
+    train.idx <- createDataPartition(dataset$classe, p = p , list = F)
+    train <- dataset[train.idx, ]
+    test.idx <- c(1:nrow(dataset))[-train.idx]
+    test <- dataset[sample(test.idx, tt.num), ]
+    df <- list(train = train, test = test)
+    df
+}
+```
+
+# Cross Validation
+The overall process is:
+- Select the top 5 most important features.
+- Determine the size of training observations for the Random Forest.
+
+## Use all the features
+First, we sample 20% of the training dataset as train and another 200 obeservations as test. Then used all remaining 58 features to train and apply a Random Forest model. The overall accuracy is 96.5%. However, the assignment only asked us to use 5 features. So we need further features selections. 
+
+```{r}
+# Random Forest
+# Since we already have a 20 observations testing sets, then we only use the training set to do
+# a cross validation and apply a random Forest one time, and choose the best top 5 features.
+df <- sample.dataset(p = 0.2, tt.num = 200, dataset = training, rand.seed = 2014)
+forest <- randomForest(classe ~., data = df$train, 
+                     mtry = 2, importance = TRUE, do.trace = 100)
+pred <- predict(forest, df$test)
+acc <- table(pred, df$test$classe)
+# confusion matrix
+acc
+# overall accuarcy 97%
+sum(diag(acc)) / sum(acc)
+```
+
+## Select features via Importance
+Then we use Gini importance provided by varImp function to select the top 5 most importance values and then do another random forest with the same train and test dataset sampled by the same random seed. The overall accuracy decrease to 89%.
+
+```{r}
+# Then use Gini importance to select the top 5 importance features
+Imp <- varImp(forest, scale = T)
+# use the average Importance as a ceriteria to select features
+AvgImp <- apply(Imp, 1, mean) 
+top5 <- head(names(AvgImp[order(AvgImp, decreasing = T)]),5)
+top5
+
+# subset the training dataset with the top 5 features
+training <- subset(training, select = c(top5, "classe"))
+# have a look at the dimension
+dim(training)
+
+# sample a again using the same seed and process
+df <- sample.dataset(p = 0.2, tt.num = 200, dataset = training, rand.seed = 2014)
+forest1 <- randomForest(classe ~., data = df$train, 
+                       mtry = 2, importance = TRUE, do.trace = 100)
+pred1 <- predict(forest1, df$test)
+acc1 <- table(pred1, df$test$classe)
+# confusion matrix
+acc1
+# After only use the top importance features, the overall accuarcy decreases to 89%
+sum(diag(acc1)) / sum(acc1)
+```
+
+## Define two functions to automate the process
+We want to know what's the optimal training size to gain a relative accuracy result based on only 5 features. So I wrote this function to automatically do a train and prediction of Random Forest for further usage.
+
+```{r}
+# Now we explore the ovarall accuracy's relationship with the growing of training size
+# First we aggregate our process above into a function
+# This function will automatically do the sampling on the dataset with proportion given
+# and sample 100 out of the train as testing for cross validation. Also we sample 100
+# in the train dataset to show the in-sample-errors.
+
+forest <- function(p, tt.num, dataset, rand.seed){
+    tt <- proc.time()
+    # sample data
+    df <- sample.dataset(p, tt.num, dataset, rand.seed)    
+        
+    # train test
+    ntrain <- nrow(df$train)
+    if(ntrain <= 100){
+        train.idx <- c(1:ntrain) 
+    }else{
+        train.idx <- sample(1:ntrain, 100)
+    }
+    
+    # build tree
+    tree <- randomForest(classe ~., data = df$train, 
+                             mtry = 2, importance = TRUE, do.trace = 100)
+    
+    # predict values of the train data and accuracy
+    tree.tr.pred <- predict(tree, newdata = df$train[train.idx,])
+    tree.tr.accu = table(df$train[train.idx,]$classe, tree.tr.pred)
+    
+    # predict values of the test data and accuracy
+    tree.tt.pred = predict(tree, newdata = df$test)
+    tree.tt.accu = table(df$test$classe, tree.tt.pred)
+    time <- round((proc.time() - tt)[3], 3)
+    # return the result
+    result <- list(train = tree.tr.accu, test = tree.tt.accu, time = time)
+    message(paste("Time Takes", time))
+    result
+}
+```
+
+A plot function to visualize the optimal training size versus porportion for later usage.
+```{r}
+# now plot those accuracy to show if there is some relationship
+plot.error <- function(step, rlist, title = ""){
+    require(gridExtra)
+    tr.acc <- sapply(rlist, function(i) sum(diag(i$train)) / sum(i$train))
+    tt.acc <- sapply(rlist, function(i) sum(diag(i$test)) / sum(i$test))    
+    time <- sapply(rlist, function(i) i$time)    
+    
+    # calculate overall accuracy
+    all.tr <- data.frame(step = step, acc = tr.acc, type = "train")
+    all.tt <- data.frame(step = step, acc = tt.acc, type = "test")
+    all.time <- data.frame(step = step, time = time)
+    all.res <- rbind(all.tr, all.tt)
+    
+    all.p <- ddply(all.res, .(step, type), summarize, sd = sd(acc), mean = mean(acc), se = sd(acc)/sqrt(length(acc)), count = length(acc))
+    all.time.p <- ddply(all.time, .(step), summarize, sd = sd(time), mean = mean(time), se = sd(time) / sqrt(length(time)), count = length(time))
+    
+    p1 <- ggplot(all.p, aes(x = step*100, y = mean, colour = type, label = round(mean,2))) + 
+        geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 3, lwd = 0.7) +
+        geom_line(lwd = 0.7) +
+        geom_point(size = 2) +
+        geom_text(size = 4, color = "black", hjust = 1) +
+        theme_bw() +
+        ggtitle(paste0(title, " on 5 features (rept num = ", unique(all.p$count), ")")) + 
+        xlab("Percentage(%) of the training") +  
+        ylab("Overall Accuracy")
+    
+    p2 <- ggplot(all.time.p, aes(x = step*100, y = mean, color = "red", label = round(mean,2))) + 
+        geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 3, lwd = 0.7) +
+        geom_line(lwd = 0.7) +
+        geom_point(size = 2) +
+        geom_text(size = 4, color = "black", hjust = 1) +
+        theme_bw() +
+        theme(legend.position="none") +
+        ggtitle(paste0(title, "'s Average Computational Time")) + 
+        xlab("Percentage(%) of the training") +  
+        ylab("Time in Second") 
+    grid.arrange(p1, p2, ncol = 2)
+    
+}
+```
+
+## Overall Accuracy over Training Size
+```{r,message=FALSE}
+# we want to try the following porportion with 5 replicates.
+p <- rep(c(0.05, 0.1, 0.2, 0.4, 0.8, 0.9), 5)
+# set the same seed for every porportion experiment such that they will have
+# the same training and testing dataset
+seed <- 2014 + rep(1:5, each = length(p))
+
+# Now use lapply to generated the 60 confusion matrix (30 for in sample 30 for out of sample).
+rlist <- lapply(1:30, function(i) forest(p = p[i], tt.num = 100, dataset = training, rand.seed = seed[i]))
+```
+
+# Conclusion
+After building 30 random forest, we already know that:
+- The training time is almost in a positive linear relationship with the training size.
+- The random forest is quiet robust with little variations with different training sample (please see the length ofthe error bars).
+- The in sample error is considerably smaller than the out of sample error.
+- The optimal training size is around 80% of the training observation. So we can use this as a training size to do a relatively accuracy prediction on the testing dataset.
+```{r, fig.align='center',fig.height=6,fig.width=14, message=FALSE}
+plot.error(p, rlist, "Random Tree")
+```
+
+Using the 5 features and 80% of training observation selected by the cross validation section, I apply my best model on the 20 testing observation and compare it with the ground truth, My result is 20 out of 20.
+
+```{r,eval=FALSE,echo=FALSE}
+library(knitr)
+knit2html("ML_Assign.Rmd")
+browseURL("ML_Assign.html")
+```

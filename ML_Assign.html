@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Prediction Assignment Writeup</title>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>Prediction Assignment Writeup</h1>
+
+<h1>Download the dataset</h1>
+
+<p>First, I set the working directory, load relevant pacakges and download all the datasets available on the Coursera. Then read the training and testing dataset to R.</p>
+
+<pre><code class="r"># set working directory
+setwd(&quot;C:/&quot;)
+if(!file.exists(&quot;./Data&quot;)) {dir.create(&quot;./Data&quot;)}
+# download related training and testing dataset
+train.url &lt;- &quot;https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv&quot;
+test.url &lt;- &quot;https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv&quot;
+download.file(train.url, destfile = &quot;./Data/train.csv&quot;)
+download.file(test.url, destfile = &quot;./Data/test.csv&quot;)
+</code></pre>
+
+<pre><code class="r"># load relavent dataset
+library(caret)
+library(randomForest)
+library(plyr)
+
+# read the dataset
+training &lt;- read.csv(&quot;./Data/train.csv&quot;)
+testing &lt;- read.csv(&quot;./Data/test.csv&quot;)
+</code></pre>
+
+<h1>Dataset Cleaning</h1>
+
+<p>Then I noticed that there are many NAs in the dataset and many values are missing. So I decided to change the numeric values in the dataset to the type of numeric, do a count of NAs and then deleted variables with NAs over 90%. After this, 101 features are deleted because of many NAs. Finally, redo all process to the testing dataset.</p>
+
+<pre><code class="r"># feature selections
+# convert all nemeric features to numeric type
+training[,6:159] &lt;- apply(training[,6:159], 2, as.numeric)
+
+# step 1 delete the potential features with over 90% missing values
+NAs &lt;- sapply(training, function(i) sum(is.na(i))) / nrow(training)
+na.feature &lt;- names(which(NAs &gt; 0.9))
+# a short list of deleted features
+head(na.feature)
+</code></pre>
+
+<pre><code>## [1] &quot;new_window&quot;           &quot;kurtosis_roll_belt&quot;   &quot;kurtosis_picth_belt&quot; 
+## [4] &quot;kurtosis_yaw_belt&quot;    &quot;skewness_roll_belt&quot;   &quot;skewness_roll_belt.1&quot;
+</code></pre>
+
+<pre><code class="r"># 101 features are deleted
+length(na.feature)
+</code></pre>
+
+<pre><code>## [1] 101
+</code></pre>
+
+<pre><code class="r">keep.feaure &lt;- setdiff(names(training), na.feature)
+# deleted all NA features
+training &lt;- training[,keep.feaure]
+
+# step 2 deleted all irrelevant variables such as name, time stamp, windows..
+training &lt;- training[, 7:59]
+
+# now perform similar treatment to testing dataset
+testing &lt;- testing[, keep.feaure[-59]]
+testing &lt;- testing[, 7:58]
+</code></pre>
+
+<h1>Sampling</h1>
+
+<p>I defined a sampling function that can divided the training dataset to subtrain and subtest according to porportion and number of test observations given. And this function is reproducable with a random seed defined. The function returns a list of data.frame which can be used for the cross validation part below.</p>
+
+<pre><code class="r"># function name: sample.dataset
+# df &lt;- sample.dataset(p = 0.20, tt.num = 100, dataset = training, rand.seed = 0)
+# sample p% proportion of the dataset as training set
+# then use sample n of the rest of the dataset as testing set
+
+# Input&gt;
+# p         proportion of the dataset to be sampled (0.1)
+# dataset   the dataset to be splited into training and testing (training)
+# rand.seed the seed use for generating random sample (0)
+# tt.num the number to be sampled to training dataset (100)
+
+sample.dataset &lt;- function(p, tt.num, dataset, rand.seed){
+    set.seed(rand.seed)
+    train.idx &lt;- createDataPartition(dataset$classe, p = p , list = F)
+    train &lt;- dataset[train.idx, ]
+    test.idx &lt;- c(1:nrow(dataset))[-train.idx]
+    test &lt;- dataset[sample(test.idx, tt.num), ]
+    df &lt;- list(train = train, test = test)
+    df
+}
+</code></pre>
+
+<h1>Cross Validation</h1>
+
+<p>The overall process is:</p>
+
+<ul>
+<li>Select the top 5 most important features.</li>
+<li>Determine the size of training observations for the Random Forest.</li>
+</ul>
+
+<h2>Use all the features</h2>
+
+<p>First, we sample 20% of the training dataset as train and another 200 obeservations as test. Then used all remaining 58 features to train and apply a Random Forest model. The overall accuracy is 96.5%. However, the assignment only asked us to use 5 features. So we need further features selections. </p>
+
+<pre><code class="r"># Random Forest
+# Since we already have a 20 observations testing sets, then we only use the training set to do
+# a cross validation and apply a random Forest one time, and choose the best top 5 features.
+df &lt;- sample.dataset(p = 0.2, tt.num = 200, dataset = training, rand.seed = 2014)
+forest &lt;- randomForest(classe ~., data = df$train, 
+                     mtry = 2, importance = TRUE, do.trace = 100)
+</code></pre>
+
+<pre><code>## ntree      OOB      1      2      3      4      5
+##   100:   3.72%  0.72%  5.66%  4.23%  6.68%  3.19%
+##   200:   3.41%  0.90%  5.66%  3.94%  5.75%  2.35%
+##   300:   3.26%  0.72%  5.39%  3.80%  5.90%  2.08%
+##   400:   3.23%  0.63%  5.39%  3.80%  6.06%  1.94%
+##   500:   3.16%  0.63%  5.26%  3.50%  5.90%  2.08%
+</code></pre>
+
+<pre><code class="r">pred &lt;- predict(forest, df$test)
+acc &lt;- table(pred, df$test$classe)
+# confusion matrix
+acc
+</code></pre>
+
+<pre><code>##     
+## pred  A  B  C  D  E
+##    A 67  1  0  0  0
+##    B  1 38  0  0  0
+##    C  0  1 32  3  0
+##    D  0  0  0 26  0
+##    E  0  0  0  0 31
+</code></pre>
+
+<pre><code class="r"># overall accuarcy 97%
+sum(diag(acc)) / sum(acc)
+</code></pre>
+
+<pre><code>## [1] 0.97
+</code></pre>
+
+<h2>Select features via Importance</h2>
+
+<p>Then we use Gini importance provided by varImp function to select the top 5 most importance values and then do another random forest with the same train and test dataset sampled by the same random seed. The overall accuracy decrease to 89%.</p>
+
+<pre><code class="r"># Then use Gini importance to select the top 5 importance features
+Imp &lt;- varImp(forest, scale = T)
+# use the average Importance as a ceriteria to select features
+AvgImp &lt;- apply(Imp, 1, mean) 
+top5 &lt;- head(names(AvgImp[order(AvgImp, decreasing = T)]),5)
+top5
+</code></pre>
+
+<pre><code>## [1] &quot;roll_belt&quot;         &quot;magnet_dumbbell_z&quot; &quot;yaw_belt&quot;         
+## [4] &quot;pitch_belt&quot;        &quot;magnet_belt_y&quot;
+</code></pre>
+
+<pre><code class="r"># subset the training dataset with the top 5 features
+training &lt;- subset(training, select = c(top5, &quot;classe&quot;))
+# have a look at the dimension
+dim(training)
+</code></pre>
+
+<pre><code>## [1] 19622     6
+</code></pre>
+
+<pre><code class="r"># sample a again using the same seed and process
+df &lt;- sample.dataset(p = 0.2, tt.num = 200, dataset = training, rand.seed = 2014)
+forest1 &lt;- randomForest(classe ~., data = df$train, 
+                       mtry = 2, importance = TRUE, do.trace = 100)
+</code></pre>
+
+<pre><code>## ntree      OOB      1      2      3      4      5
+##   100:   9.65%  7.35% 16.18% 10.95%  9.47%  5.26%
+##   200:   9.37%  7.17% 15.66% 10.80%  9.16%  4.99%
+##   300:   9.32%  7.35% 15.39% 10.66%  9.01%  4.99%
+##   400:   9.27%  7.26% 15.66% 10.51%  8.70%  4.99%
+##   500:   9.50%  7.35% 16.05% 10.95%  9.16%  4.85%
+</code></pre>
+
+<pre><code class="r">pred1 &lt;- predict(forest1, df$test)
+acc1 &lt;- table(pred1, df$test$classe)
+# confusion matrix
+acc1
+</code></pre>
+
+<pre><code>##      
+## pred1  A  B  C  D  E
+##     A 64  5  0  2  0
+##     B  1 31  1  1  0
+##     C  2  1 30  3  1
+##     D  0  3  1 23  0
+##     E  1  0  0  0 30
+</code></pre>
+
+<pre><code class="r"># After only use the top importance features, the overall accuarcy decreases to 89%
+sum(diag(acc1)) / sum(acc1)
+</code></pre>
+
+<pre><code>## [1] 0.89
+</code></pre>
+
+<h2>Define two functions to automate the process</h2>
+
+<p>We want to know what&#39;s the optimal training size to gain a relative accuracy result based on only 5 features. So I wrote this function to automatically do a train and prediction of Random Forest for further usage.</p>
+
+<pre><code class="r"># Now we explore the ovarall accuracy&#39;s relationship with the growing of training size
+# First we aggregate our process above into a function
+# This function will automatically do the sampling on the dataset with proportion given
+# and sample 100 out of the train as testing for cross validation. Also we sample 100
+# in the train dataset to show the in-sample-errors.
+
+forest &lt;- function(p, tt.num, dataset, rand.seed){
+    tt &lt;- proc.time()
+    # sample data
+    df &lt;- sample.dataset(p, tt.num, dataset, rand.seed)    
+
+    # train test
+    ntrain &lt;- nrow(df$train)
+    if(ntrain &lt;= 100){
+        train.idx &lt;- c(1:ntrain) 
+    }else{
+        train.idx &lt;- sample(1:ntrain, 100)
+    }
+
+    # build tree
+    tree &lt;- randomForest(classe ~., data = df$train, 
+                             mtry = 2, importance = TRUE, do.trace = 100)
+
+    # predict values of the train data and accuracy
+    tree.tr.pred &lt;- predict(tree, newdata = df$train[train.idx,])
+    tree.tr.accu = table(df$train[train.idx,]$classe, tree.tr.pred)
+
+    # predict values of the test data and accuracy
+    tree.tt.pred = predict(tree, newdata = df$test)
+    tree.tt.accu = table(df$test$classe, tree.tt.pred)
+    time &lt;- round((proc.time() - tt)[3], 3)
+    # return the result
+    result &lt;- list(train = tree.tr.accu, test = tree.tt.accu, time = time)
+    message(paste(&quot;Time Takes&quot;, time))
+    result
+}
+</code></pre>
+
+<p>A plot function to visualize the optimal training size versus porportion for later usage.</p>
+
+<pre><code class="r"># now plot those accuracy to show if there is some relationship
+plot.error &lt;- function(step, rlist, title = &quot;&quot;){
+    require(gridExtra)
+    tr.acc &lt;- sapply(rlist, function(i) sum(diag(i$train)) / sum(i$train))
+    tt.acc &lt;- sapply(rlist, function(i) sum(diag(i$test)) / sum(i$test))    
+    time &lt;- sapply(rlist, function(i) i$time)    
+
+    # calculate overall accuracy
+    all.tr &lt;- data.frame(step = step, acc = tr.acc, type = &quot;train&quot;)
+    all.tt &lt;- data.frame(step = step, acc = tt.acc, type = &quot;test&quot;)
+    all.time &lt;- data.frame(step = step, time = time)
+    all.res &lt;- rbind(all.tr, all.tt)
+
+    all.p &lt;- ddply(all.res, .(step, type), summarize, sd = sd(acc), mean = mean(acc), se = sd(acc)/sqrt(length(acc)), count = length(acc))
+    all.time.p &lt;- ddply(all.time, .(step), summarize, sd = sd(time), mean = mean(time), se = sd(time) / sqrt(length(time)), count = length(time))
+
+    p1 &lt;- ggplot(all.p, aes(x = step*100, y = mean, colour = type, label = round(mean,2))) + 
+        geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 3, lwd = 0.7) +
+        geom_line(lwd = 0.7) +
+        geom_point(size = 2) +
+        geom_text(size = 4, color = &quot;black&quot;, hjust = 1) +
+        theme_bw() +
+        ggtitle(paste0(title, &quot; on 5 features (rept num = &quot;, unique(all.p$count), &quot;)&quot;)) + 
+        xlab(&quot;Percentage(%) of the training&quot;) +  
+        ylab(&quot;Overall Accuracy&quot;)
+
+    p2 &lt;- ggplot(all.time.p, aes(x = step*100, y = mean, color = &quot;red&quot;, label = round(mean,2))) + 
+        geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 3, lwd = 0.7) +
+        geom_line(lwd = 0.7) +
+        geom_point(size = 2) +
+        geom_text(size = 4, color = &quot;black&quot;, hjust = 1) +
+        theme_bw() +
+        theme(legend.position=&quot;none&quot;) +
+        ggtitle(paste0(title, &quot;&#39;s Average Computational Time&quot;)) + 
+        xlab(&quot;Percentage(%) of the training&quot;) +  
+        ylab(&quot;Time in Second&quot;) 
+    grid.arrange(p1, p2, ncol = 2)
+
+}
+</code></pre>
+
+<h2>Overall Accuracy over Training Size</h2>
+
+<pre><code class="r"># we want to try the following porportion with 5 replicates.
+p &lt;- rep(c(0.05, 0.1, 0.2, 0.4, 0.8, 0.9), 5)
+# set the same seed for every porportion experiment such that they will have
+# the same training and testing dataset
+seed &lt;- 2014 + rep(1:5, each = length(p))
+
+# Now use lapply to generated the 60 confusion matrix (30 for in sample 30 for out of sample).
+rlist &lt;- lapply(1:30, function(i) forest(p = p[i], tt.num = 100, dataset = training, rand.seed = seed[i]))
+</code></pre>
+
+<pre><code>## ntree      OOB      1      2      3      4      5
+##   100:  16.58% 10.39% 24.21% 18.60% 20.50% 12.71%
+##   200:  16.07%  9.68% 23.16% 19.77% 21.12% 10.50%
+##   300:  15.87%  9.68% 24.74% 18.60% 19.88%  9.94%
+##   400:  16.17%  9.68% 24.74% 20.35% 19.88%  9.94%
+##   500:  16.28% 10.04% 24.21% 20.35% 19.88% 10.50%
+## ntree      OOB      1      2      3      4      5
+##   100:  12.83% 10.22% 18.95% 13.99% 12.73%  9.42%
+##   200:  12.27%  9.14% 17.89% 14.29% 12.73%  8.86%
+##   300:  11.71%  8.78% 17.37% 13.41% 12.42%  8.03%
+##   400:  12.22%  8.96% 17.63% 15.45% 12.73%  8.03%
+##   500:  12.32%  8.60% 17.89% 16.03% 13.04%  8.03%
+## ntree      OOB      1      2      3      4      5
+##   100:  10.24%  7.71% 15.92% 13.72%  8.85%  6.09%
+##   200:   9.65%  7.08% 15.39% 12.85%  8.54%  5.54%
+##   300:   9.50%  6.72% 15.00% 13.28%  8.07%  5.68%
+##   400:   9.50%  7.08% 15.39% 12.26%  8.23%  5.54%
+##   500:   9.63%  7.26% 15.39% 12.70%  8.70%  5.12%
+## ntree      OOB      1      2      3      4      5
+##   100:   7.18%  5.20% 11.26% 10.01%  6.92%  3.53%
+##   200:   7.25%  5.06% 10.86% 10.74%  6.92%  3.81%
+##   300:   7.15%  4.84% 10.86% 10.59%  6.84%  3.81%
+##   400:   7.04%  4.75% 11.13% 10.01%  6.68%  3.81%
+##   500:   7.03%  4.93% 10.80% 10.01%  6.76%  3.74%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.60%  4.10%  8.66%  7.78%  5.32%  2.88%
+##   200:   5.40%  4.08%  8.49%  7.41%  4.78%  2.84%
+##   300:   5.41%  4.12%  8.59%  7.20%  5.01%  2.74%
+##   400:   5.32%  4.14%  8.46%  7.16%  4.74%  2.60%
+##   500:   5.31%  3.97%  8.49%  6.98%  5.05%  2.70%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.24%  4.20%  8.07%  6.95%  4.91%  2.53%
+##   200:   5.08%  4.02%  7.87%  7.01%  4.56%  2.40%
+##   300:   5.03%  4.02%  7.78%  6.82%  4.56%  2.43%
+##   400:   5.07%  4.14%  7.81%  6.88%  4.56%  2.37%
+##   500:   5.07%  4.08%  7.72%  6.88%  4.63%  2.46%
+## ntree      OOB      1      2      3      4      5
+##   100:  16.58% 10.39% 24.21% 18.60% 20.50% 12.71%
+##   200:  16.07%  9.68% 23.16% 19.77% 21.12% 10.50%
+##   300:  15.87%  9.68% 24.74% 18.60% 19.88%  9.94%
+##   400:  16.17%  9.68% 24.74% 20.35% 19.88%  9.94%
+##   500:  16.28% 10.04% 24.21% 20.35% 19.88% 10.50%
+## ntree      OOB      1      2      3      4      5
+##   100:  12.83% 10.22% 18.95% 13.99% 12.73%  9.42%
+##   200:  12.27%  9.14% 17.89% 14.29% 12.73%  8.86%
+##   300:  11.71%  8.78% 17.37% 13.41% 12.42%  8.03%
+##   400:  12.22%  8.96% 17.63% 15.45% 12.73%  8.03%
+##   500:  12.32%  8.60% 17.89% 16.03% 13.04%  8.03%
+## ntree      OOB      1      2      3      4      5
+##   100:  10.24%  7.71% 15.92% 13.72%  8.85%  6.09%
+##   200:   9.65%  7.08% 15.39% 12.85%  8.54%  5.54%
+##   300:   9.50%  6.72% 15.00% 13.28%  8.07%  5.68%
+##   400:   9.50%  7.08% 15.39% 12.26%  8.23%  5.54%
+##   500:   9.63%  7.26% 15.39% 12.70%  8.70%  5.12%
+## ntree      OOB      1      2      3      4      5
+##   100:   7.18%  5.20% 11.26% 10.01%  6.92%  3.53%
+##   200:   7.25%  5.06% 10.86% 10.74%  6.92%  3.81%
+##   300:   7.15%  4.84% 10.86% 10.59%  6.84%  3.81%
+##   400:   7.04%  4.75% 11.13% 10.01%  6.68%  3.81%
+##   500:   7.03%  4.93% 10.80% 10.01%  6.76%  3.74%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.60%  4.10%  8.66%  7.78%  5.32%  2.88%
+##   200:   5.40%  4.08%  8.49%  7.41%  4.78%  2.84%
+##   300:   5.41%  4.12%  8.59%  7.20%  5.01%  2.74%
+##   400:   5.32%  4.14%  8.46%  7.16%  4.74%  2.60%
+##   500:   5.31%  3.97%  8.49%  6.98%  5.05%  2.70%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.24%  4.20%  8.07%  6.95%  4.91%  2.53%
+##   200:   5.08%  4.02%  7.87%  7.01%  4.56%  2.40%
+##   300:   5.03%  4.02%  7.78%  6.82%  4.56%  2.43%
+##   400:   5.07%  4.14%  7.81%  6.88%  4.56%  2.37%
+##   500:   5.07%  4.08%  7.72%  6.88%  4.63%  2.46%
+## ntree      OOB      1      2      3      4      5
+##   100:  16.58% 10.39% 24.21% 18.60% 20.50% 12.71%
+##   200:  16.07%  9.68% 23.16% 19.77% 21.12% 10.50%
+##   300:  15.87%  9.68% 24.74% 18.60% 19.88%  9.94%
+##   400:  16.17%  9.68% 24.74% 20.35% 19.88%  9.94%
+##   500:  16.28% 10.04% 24.21% 20.35% 19.88% 10.50%
+## ntree      OOB      1      2      3      4      5
+##   100:  12.83% 10.22% 18.95% 13.99% 12.73%  9.42%
+##   200:  12.27%  9.14% 17.89% 14.29% 12.73%  8.86%
+##   300:  11.71%  8.78% 17.37% 13.41% 12.42%  8.03%
+##   400:  12.22%  8.96% 17.63% 15.45% 12.73%  8.03%
+##   500:  12.32%  8.60% 17.89% 16.03% 13.04%  8.03%
+## ntree      OOB      1      2      3      4      5
+##   100:  10.24%  7.71% 15.92% 13.72%  8.85%  6.09%
+##   200:   9.65%  7.08% 15.39% 12.85%  8.54%  5.54%
+##   300:   9.50%  6.72% 15.00% 13.28%  8.07%  5.68%
+##   400:   9.50%  7.08% 15.39% 12.26%  8.23%  5.54%
+##   500:   9.63%  7.26% 15.39% 12.70%  8.70%  5.12%
+## ntree      OOB      1      2      3      4      5
+##   100:   7.18%  5.20% 11.26% 10.01%  6.92%  3.53%
+##   200:   7.25%  5.06% 10.86% 10.74%  6.92%  3.81%
+##   300:   7.15%  4.84% 10.86% 10.59%  6.84%  3.81%
+##   400:   7.04%  4.75% 11.13% 10.01%  6.68%  3.81%
+##   500:   7.03%  4.93% 10.80% 10.01%  6.76%  3.74%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.60%  4.10%  8.66%  7.78%  5.32%  2.88%
+##   200:   5.40%  4.08%  8.49%  7.41%  4.78%  2.84%
+##   300:   5.41%  4.12%  8.59%  7.20%  5.01%  2.74%
+##   400:   5.32%  4.14%  8.46%  7.16%  4.74%  2.60%
+##   500:   5.31%  3.97%  8.49%  6.98%  5.05%  2.70%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.24%  4.20%  8.07%  6.95%  4.91%  2.53%
+##   200:   5.08%  4.02%  7.87%  7.01%  4.56%  2.40%
+##   300:   5.03%  4.02%  7.78%  6.82%  4.56%  2.43%
+##   400:   5.07%  4.14%  7.81%  6.88%  4.56%  2.37%
+##   500:   5.07%  4.08%  7.72%  6.88%  4.63%  2.46%
+## ntree      OOB      1      2      3      4      5
+##   100:  16.58% 10.39% 24.21% 18.60% 20.50% 12.71%
+##   200:  16.07%  9.68% 23.16% 19.77% 21.12% 10.50%
+##   300:  15.87%  9.68% 24.74% 18.60% 19.88%  9.94%
+##   400:  16.17%  9.68% 24.74% 20.35% 19.88%  9.94%
+##   500:  16.28% 10.04% 24.21% 20.35% 19.88% 10.50%
+## ntree      OOB      1      2      3      4      5
+##   100:  12.83% 10.22% 18.95% 13.99% 12.73%  9.42%
+##   200:  12.27%  9.14% 17.89% 14.29% 12.73%  8.86%
+##   300:  11.71%  8.78% 17.37% 13.41% 12.42%  8.03%
+##   400:  12.22%  8.96% 17.63% 15.45% 12.73%  8.03%
+##   500:  12.32%  8.60% 17.89% 16.03% 13.04%  8.03%
+## ntree      OOB      1      2      3      4      5
+##   100:  10.24%  7.71% 15.92% 13.72%  8.85%  6.09%
+##   200:   9.65%  7.08% 15.39% 12.85%  8.54%  5.54%
+##   300:   9.50%  6.72% 15.00% 13.28%  8.07%  5.68%
+##   400:   9.50%  7.08% 15.39% 12.26%  8.23%  5.54%
+##   500:   9.63%  7.26% 15.39% 12.70%  8.70%  5.12%
+## ntree      OOB      1      2      3      4      5
+##   100:   7.18%  5.20% 11.26% 10.01%  6.92%  3.53%
+##   200:   7.25%  5.06% 10.86% 10.74%  6.92%  3.81%
+##   300:   7.15%  4.84% 10.86% 10.59%  6.84%  3.81%
+##   400:   7.04%  4.75% 11.13% 10.01%  6.68%  3.81%
+##   500:   7.03%  4.93% 10.80% 10.01%  6.76%  3.74%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.60%  4.10%  8.66%  7.78%  5.32%  2.88%
+##   200:   5.40%  4.08%  8.49%  7.41%  4.78%  2.84%
+##   300:   5.41%  4.12%  8.59%  7.20%  5.01%  2.74%
+##   400:   5.32%  4.14%  8.46%  7.16%  4.74%  2.60%
+##   500:   5.31%  3.97%  8.49%  6.98%  5.05%  2.70%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.24%  4.20%  8.07%  6.95%  4.91%  2.53%
+##   200:   5.08%  4.02%  7.87%  7.01%  4.56%  2.40%
+##   300:   5.03%  4.02%  7.78%  6.82%  4.56%  2.43%
+##   400:   5.07%  4.14%  7.81%  6.88%  4.56%  2.37%
+##   500:   5.07%  4.08%  7.72%  6.88%  4.63%  2.46%
+## ntree      OOB      1      2      3      4      5
+##   100:  16.58% 10.39% 24.21% 18.60% 20.50% 12.71%
+##   200:  16.07%  9.68% 23.16% 19.77% 21.12% 10.50%
+##   300:  15.87%  9.68% 24.74% 18.60% 19.88%  9.94%
+##   400:  16.17%  9.68% 24.74% 20.35% 19.88%  9.94%
+##   500:  16.28% 10.04% 24.21% 20.35% 19.88% 10.50%
+## ntree      OOB      1      2      3      4      5
+##   100:  12.83% 10.22% 18.95% 13.99% 12.73%  9.42%
+##   200:  12.27%  9.14% 17.89% 14.29% 12.73%  8.86%
+##   300:  11.71%  8.78% 17.37% 13.41% 12.42%  8.03%
+##   400:  12.22%  8.96% 17.63% 15.45% 12.73%  8.03%
+##   500:  12.32%  8.60% 17.89% 16.03% 13.04%  8.03%
+## ntree      OOB      1      2      3      4      5
+##   100:  10.24%  7.71% 15.92% 13.72%  8.85%  6.09%
+##   200:   9.65%  7.08% 15.39% 12.85%  8.54%  5.54%
+##   300:   9.50%  6.72% 15.00% 13.28%  8.07%  5.68%
+##   400:   9.50%  7.08% 15.39% 12.26%  8.23%  5.54%
+##   500:   9.63%  7.26% 15.39% 12.70%  8.70%  5.12%
+## ntree      OOB      1      2      3      4      5
+##   100:   7.18%  5.20% 11.26% 10.01%  6.92%  3.53%
+##   200:   7.25%  5.06% 10.86% 10.74%  6.92%  3.81%
+##   300:   7.15%  4.84% 10.86% 10.59%  6.84%  3.81%
+##   400:   7.04%  4.75% 11.13% 10.01%  6.68%  3.81%
+##   500:   7.03%  4.93% 10.80% 10.01%  6.76%  3.74%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.60%  4.10%  8.66%  7.78%  5.32%  2.88%
+##   200:   5.40%  4.08%  8.49%  7.41%  4.78%  2.84%
+##   300:   5.41%  4.12%  8.59%  7.20%  5.01%  2.74%
+##   400:   5.32%  4.14%  8.46%  7.16%  4.74%  2.60%
+##   500:   5.31%  3.97%  8.49%  6.98%  5.05%  2.70%
+## ntree      OOB      1      2      3      4      5
+##   100:   5.24%  4.20%  8.07%  6.95%  4.91%  2.53%
+##   200:   5.08%  4.02%  7.87%  7.01%  4.56%  2.40%
+##   300:   5.03%  4.02%  7.78%  6.82%  4.56%  2.43%
+##   400:   5.07%  4.14%  7.81%  6.88%  4.56%  2.37%
+##   500:   5.07%  4.08%  7.72%  6.88%  4.63%  2.46%
+</code></pre>
+
+<h1>Conclusion</h1>
+
+<p>After building 30 random forest, we already know that:</p>
+
+<ul>
+<li>The training time is almost in a positive linear relationship with the training size.</li>
+<li>The random forest is quiet robust with little variations with different training sample (please see the length ofthe error bars).</li>
+<li>The in sample error is considerably smaller than the out of sample error.</li>
+<li>The optimal training size is around 80% of the training observation. So we can use this as a training size to do a relatively accuracy prediction on the testing dataset.</li>
+</ul>
+
+<pre><code class="r">plot.error(p, rlist, &quot;Random Tree&quot;)
+</code></pre>
+
+<p><img src="data:image/png;base64,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" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" /></p>
+
+<p>Using the 5 features and 80% of training observation selected by the cross validation section, I apply my best model on the 20 testing observation and compare it with the ground truth, My result is 20 out of 20.</p>
+
+</body>
+
+</html>
